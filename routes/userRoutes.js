@@ -3,7 +3,7 @@ const router = express.Router()
 
 const userController = require('../controller/userController')
 const checkUser =     require('../middlewares/auth')
-const msg = require('../controller/msgSend')
+
 // middlewares
 router.use('/changePassword', checkUser)
 router.use('/loggedUser', checkUser)

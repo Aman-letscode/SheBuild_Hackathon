@@ -3,18 +3,28 @@ const mongoose = require('mongoose')
 const mongodb = require('mongodb')
 const jwt = require('jsonwebtoken')
 const userModel = require('../models/userModel')
-
+const vaccine= require('../models/vaccineModel')
 const services = require('./services')
 
 class UserController {
+    static userWelcome = async (req,res) =>{
+        res.send("Welcome to Registration form");
+    }
     static userRegister = async (req,res) =>{
-            const {firstname,lastname,phone,email,password,cpassword} = req.body;
-            const dateofbirth = req.body.DOB;
+            const firstname=req.body.firstname;
+            const lastname= req.body.lastname;
+            const phone=req.body.phone;
+            const email=req.body.email;
+            const password = req.body.password;
+            const cpassword = req.body.cpassword;
+            const dob = req.body.dob;
+            // const dateofbirth = req.body.DOB;
             
             const user = await userModel.findOne({"phone": phone}).lean();
        
             if(user){
                 res.send({"status":"failed", "message": "User Already Exist!!"})
+                sendMsg("7743927707","You are Registered Successfully");
                 console.log(user);
             }
             else{
@@ -30,13 +40,14 @@ class UserController {
                                 phone: phone,
                                 password: hash_password,
                                 confirmpassword: hash_password,
-                                dateOfBirth: dateofbirth,
+                                dateOfBirth: dob
 
                             })
                             await doc.save()
                             const saved = await userModel.findOne({phone: phone});
                                 const token = jwt.sign({userID: saved._id},process.env.JWT_SECRET_KEY,{expiresIn: '5d'})
-                                sendMsg(5,"You are Registered");
+                                services.sendMsg("You are Registered Successfully");
+                                // services.updateVac(saved.lean())
                                 res.status(201).send({"status":"success", "message": "Registration Successful","token":token})
                         }catch(err){
                             console.log(err);
@@ -60,12 +71,9 @@ class UserController {
 
         if(user){
             if(phone && password){
-                // const salt = await bcrypt.genSalt(10);
-                // const hash_password = await bcrypt.hash(password,salt)
+                
                 const checkpass = await bcrypt.compareSync(password,user.password)
-                if((user.phone === phone) && 
-                // password === user.password
-                checkpass){
+                if((user.phone === phone) &&     checkpass){
 
 
                     const token = jwt.sign({userID:user._id},process.env.JWT_SECRET_KEY,{expiresIn:'5d'});
@@ -92,13 +100,21 @@ class UserController {
         // const obj = mongodb.ObjectId(Id["userID"]);
         // res.send({"_id":Id})
         // const users = 
-        const id = await userModel.findById(Id.userID)
-        // const allid = await userModel.find()
-        if(id){
-            res.status(201).json(id)
-        }else{
-            res.send({"status":"failed","Message":"User not found"})
-        }
+        // const id = await userModel.findById(Id.userID)
+        const id = await userModel.findById("63b96cbc5bac74775886a8b7")
+        const allid = await vaccine.find()
+        services.updateVac(id,allid);
+        // if(id){
+            
+            res.status(201).json({
+                        user:id
+                    })
+        // } 
+    }
+
+    static enableVac = async (req,res)=>{
+        const enable = req.body;
+        
     }
 }
 

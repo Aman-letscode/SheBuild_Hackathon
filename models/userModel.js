@@ -38,10 +38,11 @@ const UserSchema = new mongoose.Schema({
         trim: true
     },
     dateOfBirth:{
-
+        type:Date,
+        required:true
     },
-    vaccine_taken: {
-        type: Object,
+    vaccine: {
+        type: Array,
         required: false
     },
     pregnancy_date:{

@@ -6,11 +6,11 @@ const VacSchema = new mongoose.Schema({
         require: true,
     },
     Duration_start: {
-        type: Number,
+        type: Array,
         require: true,
     },
     Duration_end: {
-        type: Number,
+        type: Array,
         require: true,
     },
     Description: {
@@ -18,7 +18,7 @@ const VacSchema = new mongoose.Schema({
         require: false,
     },
     repeat: {
-        type: number,
+        type: Number,
         require: true,
     },
 });
