@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
-const mongodb = require('mongodb')
+
 const jwt = require('jsonwebtoken')
 const userModel = require('../models/userModel')
 const vaccine= require('../models/vaccineModel')
@@ -9,6 +9,9 @@ const services = require('./services')
 class UserController {
     static userWelcome = async (req,res) =>{
         res.send("Welcome to Registration form");
+        // const allid = await userModel.find();
+        // res.send(allid);
+        // services.MsgAllot(allid);
     }
     static userRegister = async (req,res) =>{
             const firstname=req.body.firstname;
@@ -93,29 +96,72 @@ class UserController {
 
     }
 
+    static enabled = async (req,res) =>{
+        const Id=services.parseJwt(req.body.id)
+        const vac = req.body.vaccine;
+        
+        let id = await userModel.findById(Id.userID)
+const curdate = new Date();
+let rem;
+let data = [];
+        const vacName = id.vaccine;
+        for(let ele of vacName){
+            if(ele.name===vac){
+                for(let i=0;i< ele.date.length;i++){
+                   if(curdate.getTime()>=ele.date[i].getTime()){
+                       rem = i;
+                       break;
+                   }
+                }
+                ele.date.splice(rem,rem);
+                break;
+                
+            }
+            data.push(ele)
+        }
+        userModel.updateOne({phone:id.phone},{$set:{vaccine:data}},(err,doc)=>{
+            if(err) throw err;
+            console.log("Updated");  
+        });
+        res.send({"status":"success","message":"Successfully Updated"});
 
-    static userDetails = async (req,res) =>{
-        const Id = services.parseJwt(req.params.id);
-        // res.send(Id);
-        // const obj = mongodb.ObjectId(Id["userID"]);
-        // res.send({"_id":Id})
-        // const users = 
-        // const id = await userModel.findById(Id.userID)
-        const id = await userModel.findById("63b96cbc5bac74775886a8b7")
-        const allid = await vaccine.find()
-        services.updateVac(id,allid);
-        // if(id){
-            
-            res.status(201).json({
-                        user:id
-                    })
-        // } 
+
     }
+    static userDetails = async(req,res) =>{
+        const Id=services.parseJwt(req.params.id)
+        // .then((result)=>{
+            
+        //     // console.log(result);
+        //     return result.userID;
+        // });
+        console.log(Id)
+        let id = await userModel.findById(Id.userID)
+        console.log(id);
+        const allid = await vaccine.find()
+        const vac = services.updateVac(id,allid);
+        console.log(vac);
+        if(vac.length>0 && vac[0]!="Not Found"){
 
-    static enableVac = async (req,res)=>{
-        const enable = req.body;
+        
+        userModel.updateOne({phone:id.phone},{$set:{vaccine:vac}},(err,doc)=>{
+            if(err) throw err;
+            console.log("Updated");
+            
+            
+        });
+        id = await userModel.findById(Id.userID)
+        
+            
         
     }
+    else{
+        console.log(vac); 
+        
+    }
+    res.status(201).json({user:id})
+    }
+
+//    static Message = services.MsgAllot(model);
 }
 
 

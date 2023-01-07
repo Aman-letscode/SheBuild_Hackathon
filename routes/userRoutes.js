@@ -2,19 +2,17 @@ const express = require('express')
 const router = express.Router()
 
 const userController = require('../controller/userController')
-const checkUser =     require('../middlewares/auth')
 
-// middlewares
-router.use('/changePassword', checkUser)
-router.use('/loggedUser', checkUser)
 
 
 //Request and controls
-// router.get('/send',(req,res)=>{ msg(5,"Your Appointment:")});
+
 router.post('/register', userController.userRegister)
+router.get('/register', userController.userWelcome)
 router.post('/login', userController.userLogin)
 router.get('/dashboard/:id/', userController.userDetails)
-// router.post('/login', userController.login)
+router.get('/enable/:id/:vaccine/', userController.enabled)
+
 
 
 module.exports = router;

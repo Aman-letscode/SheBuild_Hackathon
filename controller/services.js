@@ -9,21 +9,57 @@ const jwt = require('jsonwebtoken')
 
 class Services{
 
+  static sendMsg = async (recipent,Messages) => {
+  
+    client.messages
+      .create({ body: Messages, from: "+14323025386", to: "+91"+recipent })
+      .then(message => console.log(message.sid));
+      console.log(recipent);
+}
 
-  static parseJwt= async (token)=> {
+
+  static MsgAllot =  (data) =>{
+    
+    let date = new Date();
+    let num = [];
+    for(let ele of data){
+      if(ele.vaccine.length>0){
+
+        let vacdate = ele.vaccine;
+        for(let e of vacdate){
+
+        
+        if(e.date.length>0){
+          if(date.getTime()>= e.date[0].getTime()){
+            let name = e.name;
+            let msg = `You need to be take ${name} vaccine. `
+            this.sendMsg(ele.phone,msg)
+            num.push(ele.phone);
+          }
+        }
+      }
+      }
+      }
+      console.log(num);
+    }
+
+
+
+  static parseJwt = (token)=> {
     return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
 }
 
-   static updateVac = async(id,vaccines)=>{
+   static updateVac = (id,vaccines)=>{
     const date = new Date(id.pregnancy_date)
     const time = date.getTime(); 
-    if(id.vaccine.length== 0){
-
+    const arr = []
+    if(id.vaccine.length == 0){
+      
     for(let element of vaccines){
       // vaccines.forEach(element => {
         let obj = {};
         
-        obj["name"] = element.name;
+        obj["name"]= element.name;
         obj["enable"] = 0;
         obj["date"] = [];
         if(element.name == "Influenza"){
@@ -44,19 +80,24 @@ class Services{
           }
         }
         obj["repeat"]= element.repeat;
-        id.vaccine.push(obj);
+        arr.push(obj);
       }
-      console.log(id.vaccine);
+      
+      
+      
+      // console.log(id.vaccine);
+      
     }
+    return arr;
     
    }
 
-  static sendMsg = async (recipent,Messages) => {
+
+   static enableVac = (id,vac,enable)=>{
+
+   }
+
   
-      client.messages
-        .create({ body: Messages, from: "+14323025386", to: "+91"+recipent })
-        .then(message => console.log(message.sid));
-  }
 
 }
 
