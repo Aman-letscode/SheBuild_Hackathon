@@ -1,0 +1,34 @@
+.orgName{
+  font-size: xxx-large;
+}
+.orgName1{
+  font-size: small;
+}
+.orgName-centre{
+  display: flex;
+  justify-content: center;
+  margin-top: 2em;
+}
+.orgName-centre1{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2em;
+}
+.image-area{
+  display: flex;
+  justify-content:right;
+  margin-top: 2em;
+}
+.image{
+  size: 8em;
+}
+
+.blue-background{
+position: absolute;
+width: 100%;
+height: 100%;
+background: linear-gradient(116.89deg, rgba(54, 232, 223, 0.82) 47.25%, rgba(105, 222, 201, 0) 85.05%);
+mix-blend-mode: multiply;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
