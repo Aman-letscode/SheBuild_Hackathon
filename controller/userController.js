@@ -95,33 +95,18 @@ class UserController {
         const id = await model.findById(Id.userID)
         // const allid = await model.find()
         if(id){
-            res.status(201).json({
-                        user:id
+            res.status(201).json(
+                        id
 
-                    })
+                    )
+        }else{
+            
         }
-        res.json(allid);
-        // .then(result=>{
-        //     res.status(201).json({
-        //         user:result
-        //     })
-        // }).catch(err=>{
-        //     console.log(err);
-        //     res.status(500).json({
-        //         error:err
-        //     })
-        // });
-        // if(users){
+        
 
-        //     console.log(users);
-        // }
-        // res.send({"status":"check cmd"})
-
-        // if(users!='undefined'){
-        //     const js = user.lean().exec((err,docs)=>{
-        //         return res.end(JSON.stringify(docs));
-        //     })
-        // }
+        if(id!='undefined'){
+           
+        }
     }
 }
 
