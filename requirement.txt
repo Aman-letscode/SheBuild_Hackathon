@@ -1,0 +1,20 @@
+npm init
+
+//run in cmd
+npm install express jsonwebtoken bcrypt mongoose dotenv twilio nodemon
+
+
+//for starting the app
+npm run dev
+
+
+//for registration
+http://localhost:3000/api/user/register
+
+//for login
+http://localhost:3000/api/user/login
+
+//for getting user
+http://localhost:3000/api/user/dashboard/:id/
+// :id -> token in jwt
+
