@@ -2,16 +2,16 @@ const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const mongodb = require('mongodb')
 const jwt = require('jsonwebtoken')
-const model = require('../models/userModel.js')
-const sendMsg = require('./msgSend')
-const services = require('./msgSend')
+const userModel = require('../models/userModel')
+
+const services = require('./services')
 
 class UserController {
     static userRegister = async (req,res) =>{
             const {firstname,lastname,phone,email,password,cpassword} = req.body;
             const dateofbirth = req.body.DOB;
             
-            const user = await model.findOne({"phone": phone}).lean();
+            const user = await userModel.findOne({"phone": phone}).lean();
        
             if(user){
                 res.send({"status":"failed", "message": "User Already Exist!!"})
@@ -23,7 +23,7 @@ class UserController {
                         try{
                             const salt = await bcrypt.genSalt(10);
                             const hash_password = await bcrypt.hash(password,salt)
-                            const doc = new model({
+                            const doc = new userModel({
                                 firstname: firstname,
                                 lastname: lastname,
                                 email: email,
@@ -34,7 +34,7 @@ class UserController {
 
                             })
                             await doc.save()
-                            const saved = await model.findOne({phone: phone});
+                            const saved = await userModel.findOne({phone: phone});
                                 const token = jwt.sign({userID: saved._id},process.env.JWT_SECRET_KEY,{expiresIn: '5d'})
                                 sendMsg(5,"You are Registered");
                                 res.status(201).send({"status":"success", "message": "Registration Successful","token":token})
@@ -56,7 +56,7 @@ class UserController {
         let option = {
             sort: {"phone": phone}
         }
-        const user = await model.findOne({phone: phone}).lean();
+        const user = await userModel.findOne({phone: phone}).lean();
 
         if(user){
             if(phone && password){
@@ -92,20 +92,12 @@ class UserController {
         // const obj = mongodb.ObjectId(Id["userID"]);
         // res.send({"_id":Id})
         // const users = 
-        const id = await model.findById(Id.userID)
-        // const allid = await model.find()
+        const id = await userModel.findById(Id.userID)
+        // const allid = await userModel.find()
         if(id){
-            res.status(201).json(
-                        id
-
-                    )
+            res.status(201).json(id)
         }else{
-            
-        }
-        
-
-        if(id!='undefined'){
-           
+            res.send({"status":"failed","Message":"User not found"})
         }
     }
 }

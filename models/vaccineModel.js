@@ -5,7 +5,11 @@ const VacSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
-    Duration: {
+    Duration_start: {
+        type: Number,
+        require: true,
+    },
+    Duration_end: {
         type: Number,
         require: true,
     },
