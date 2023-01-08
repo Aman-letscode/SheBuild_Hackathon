@@ -1,19 +1,30 @@
-import React from 'react'
-import Button from '@mui/material/Button';
-import { Avatar, Grid, Link, Paper, TextField, Typography } from '@mui/material'
+import React from 'react';
+import { Avatar, Grid, Link, Paper, Typography } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-
+import './login.css'
+import { useState } from 'react';
 
 
 const Login=({handleChange})=>{
+  
+  const [phone,setPhoneNo]=useState("");
+  const [password,setpass]=useState("");
   const paperStyle={padding: 20, height: '77vh', width: 300, margin: "20px auto"}
   const avatarStyle={backgroundColor: '#26baab'}
-  const btnStyle={margin: '8px 0'}
-  const marginTop = { margin: 5 }
+  const handleSubmit= (e)=>{
+    e.preventDefault();
+    const detail ={phone,password}
+    fetch("",{
+      method:'POST',
+      headers:{
+        'Accept':'verification/json',
+        'Content-type':'verification/json'
+      },
+      body:JSON.stringify(detail)
+    }).then((result)=>{ console.warn('result',result)
+    })
+  }
+
 
   return(
     <Grid>
@@ -22,20 +33,12 @@ const Login=({handleChange})=>{
         <Avatar style={avatarStyle}><LockOutlinedIcon/></Avatar>
         <h2>Sign in</h2>
         </Grid>
-        <TextField id="filled-basic" label="Firstname" variant="filled"  fullWidth required/>
-        <TextField id="filled-basic" label="Lastname" variant="filled"  fullWidth required/>
-        <TextField id="filled-basic" label="Phone Number" variant="filled" fullWidth placeholder="Enter your phone number" required />
-        <TextField id="filled-basic" label="Password" type='password' variant="filled"  fullWidth required/>
-        <FormControl component="fieldset" style={marginTop}>
-            <FormLabel id="demo-controlled-radio-buttons-group">Is this your first pregnancy?</FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-controlled-radio-buttons-group"
-              name="controlled-radio-buttons-group" style={{ display: 'initial' }} required>
-              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio />} label="No" />
-            </RadioGroup>
-          </FormControl>
-        <Button type="submit" color='primary' variant="contained" style={btnStyle} fullWidth>Sign in</Button>
+        <form onSubmit={handleSubmit}>
+        <input name='PhoneNo.'  fullWidth placeholder="Enter your phone number" required className='login-text' value={phone} onChange={(e)=>setPhoneNo(e.target.value)} />
+        <input name='Password'  placeholder="Password" variant="filled"  fullWidth required className='login-text' value={password} onChange={(e)=>setpass(e.target.value)}/>
+        <br></br><input type='checkbox'></input>
+        <button type='submit' className='btn btn-primary' >Sign In</button>
+        </form>
         <Grid align="left">
         <Typography>
         <Link href="#">Forgot password ?</Link>

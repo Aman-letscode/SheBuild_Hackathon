@@ -1,0 +1,8 @@
+.login-text{
+    width: 17em;
+    margin: 0.1em;
+    background-color: rgb(247, 242, 242);
+    color: black;
+    border-radius: 0.4em;
+    height: 3rem;
+}
