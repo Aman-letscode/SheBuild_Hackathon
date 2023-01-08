@@ -4,11 +4,12 @@ dotenv.config()
 
 const express = require('express')
 const cors = require('cors')
-
+const services= require('./controller/services')
 
 //user defined files
 const connect = require('./config/connect')
 const routes = require('./routes/userRoutes')
+const UserController = require('./controller/userController')
 
 
 //Initializing the express, port and url
@@ -25,6 +26,11 @@ connect(DATABASE_URL)
 
 
 app.listen(port, ()=>{
+    // interval();
+    setInterval(() => {
+    //   const num =   MsgAllot();
+    UserController.msgSend();
+    }, 24*60*60*1000);
     console.log(`Listening at the port: ${port}`)
 });
 
