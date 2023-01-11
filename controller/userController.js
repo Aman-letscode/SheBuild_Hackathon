@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt");
-
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
 const vaccine = require("../models/vaccineModel");
@@ -7,14 +6,15 @@ const services = require("./services");
 
 class UserController {
   static userWelcome = async (req, res) => {
-    res.send("Welcome to Registration form");
-    // const allid = await userModel.find();
-    // res.send(allid);
+    // res.json("Welcome to Registration form");
+    const allid = await userModel.find();
+    res.json(allid);
     // services.MsgAllot(allid);
   };
   static msgSend = async () =>{
     const allid = await userModel.find();
-    // res.send(allid);
+    // res.json(allid);
+    
     services.MsgAllot(allid);
   }
   static userRegister = async (req, res) => {
@@ -30,7 +30,7 @@ class UserController {
     const user = await userModel.findOne({ phone: phone }).lean();
 
     if (user) {
-      res.send({ status: "failed", message: "User Already Exist!!" });
+      res.json({ status: "failed", message: "User Already Exist!!" });
       sendMsg("7743927707", "You are Registered Successfully");
       console.log(user);
     } else {
@@ -57,36 +57,38 @@ class UserController {
             );
             services.sendMsg("You are Registered Successfully");
             // services.updateVac(saved.lean())
-            res
-              .status(201)
-              .send({
+            res.json({
                 status: "success",
                 message: "Registration Successful",
                 token: token,
               });
           } catch (err) {
             console.log(err);
-            res.send({
+            res.json({
               status: "failed",
               message: "Registration UnSuccessful",
             });
           }
         } else {
-          res.send({
+          res.json({
             status: "failed",
             message: "Password and Confirm Password wasn't matching",
           });
         }
       } else {
-        res.send({ status: "failed", message: "All feilds are required" });
+        res.json({ status: "failed", message: "All feilds are required" });
       }
     }
   };
+
+
+
   static userLogin = async (req, res) => {
-    const { phone, password } = req.body;
-    let option = {
-      sort: { phone: phone },
-    };
+    console.log(req.body);
+    // const { phone, password } = req.body;
+    const phone = req.body.phone;
+    const password = req.body.password;
+    // const 
     const user = await userModel.findOne({ phone: phone }).lean();
 
     if (user) {
@@ -98,25 +100,30 @@ class UserController {
             process.env.JWT_SECRET_KEY,
             { expiresIn: "5d" }
           );
+          console.log("Login SUccessfully")
           res
             .status(201)
-            .send({
+            .json({
               status: "success",
               message: "Login Successful",
               token: token,
             });
         } else {
-          res.send({
+          console.log("Login Unsuccessful")
+          const result = {
             status: "failed",
             message: "Please check the credentials",
-          });
+          }
+          res.json(`${result}`);
           console.log(user.password);
         }
       } else {
-        res.send({ status: "failed", message: "All feilds are required" });
+        console.log("All feilds are required")
+        res.json({ status: "failed", message: "All feilds are required" });
       }
     } else {
-      res.send({
+      console.log("User not found! Please registe")
+      res.json({
         status: "failed",
         message: "User not found! Please register",
       });
@@ -140,7 +147,9 @@ class UserController {
           if (curdate.getTime() >= ele.date[i].getTime()) {
             // rem = i;
             // break;
-            continue;
+            // continue;
+            updateDate.push(curdate);
+            ele.enable++;
           }else{
 
               updateDate.push(ele.date[i]);
@@ -161,7 +170,7 @@ class UserController {
       }
     );
     id = await userModel.findById(Id.userID);
-    res.send({ status: "success", message: "Successfully Updated",user: id});
+    res.json({ status: "success", message: "Successfully Updated",user: id});
 
 
 
@@ -175,7 +184,7 @@ class UserController {
     const allid = await vaccine.find();
     const vac = services.updateVac(id, allid);
     console.log(vac);
-    if (vac.length > 0 && vac[0] != "Not Found") {
+    if (vac.length > 0 ) {
       userModel.updateOne(
         { phone: id.phone },
         { $set: { vaccine: vac } },
