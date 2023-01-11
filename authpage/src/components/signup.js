@@ -25,7 +25,7 @@ const Signup = () => {
   const handleSubmit= async (e)=>{
     e.preventDefault();
     const detail ={firstname,lastname,phone,password,cpassword}
-
+try{
     const response = await fetch("http://localhost:4000/api/user/register",{
       method:'POST',
       headers:{
@@ -36,6 +36,9 @@ const Signup = () => {
     })
     const res = await response.json();
     console.log(res);
+  }catch(err){
+    console.log(err);
+  }
   }
 
 
