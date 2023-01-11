@@ -14,6 +14,7 @@ const Login=({handleChange})=>{
   const handleSubmit= (e)=>{
     e.preventDefault();
     const detail ={phone,password}
+    console.log(detail);
     fetch("",{
       method:'POST',
       headers:{
@@ -23,6 +24,7 @@ const Login=({handleChange})=>{
       body:JSON.stringify(detail)
     }).then((result)=>{ console.warn('result',result)
     })
+    console.log(detail)
   }
 
 
