@@ -22,18 +22,23 @@ const Signup = () => {
   const [phone,setPhoneNo]=useState("");
   const [password,setpass]=useState("");
   const [cpassword,setcpass]=useState("");
-  const handleSubmit= (e)=>{
+  const handleSubmit= async (e)=>{
     e.preventDefault();
     const detail ={firstname,lastname,phone,password,cpassword}
-    fetch("",{
+try{
+    const response = await fetch("http://localhost:4000/api/user/register",{
       method:'POST',
       headers:{
         'Accept':'verification/json',
         'Content-type':'verification/json'
       },
       body:JSON.stringify(detail)
-    }).then((result)=>{ console.warn('result',result)
     })
+    const res = await response.json();
+    console.log(res);
+  }catch(err){
+    console.log(err);
+  }
   }
 
 

@@ -21,7 +21,7 @@ function App() {
       <Page/></>}>
 
       </Route>
-      <Route exact path='/login' element={<><SignInOutContainer/>
+      <Route exact path='/login' element={<><Header/><SignInOutContainer/>
       </>}>
 
       </Route>

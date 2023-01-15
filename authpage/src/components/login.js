@@ -9,26 +9,52 @@ const Login=({handleChange})=>{
   
   const [phone,setPhoneNo]=useState("");
   const [password,setpass]=useState("");
+  const [error,seterror]=useState("");
   const paperStyle={padding: 20, height: '77vh', width: 300, margin: "20px auto"}
   const avatarStyle={backgroundColor: '#26baab'}
-  const handleSubmit= (e)=>{
+  
+  const handleSubmit = async (e)=>{
     e.preventDefault();
-    const detail ={phone,password}
+    const detail ={phone:phone,password:password}
     console.log(detail);
-    fetch("",{
+    // console.log(JSON.stringify(detail))
+    console.log(detail)
+    try{
+
+    
+    const response = await fetch("http://localhost:4000/api/user/login",{
       method:'POST',
       headers:{
-        'Accept':'verification/json',
-        'Content-type':'verification/json'
+        // 'Accept':'application/json',
+        'Content-type':'application/json'
       },
+      // body:detail
       body:JSON.stringify(detail)
-    }).then((result)=>{ console.warn('result',result)
-    })
-    console.log(detail)
+    });
+    if (!response.ok) {
+      throw new Error(`Error! status: ${response.status}`);
+    } 
+    const res = await response.json();
+    
+    console.log(res);
+    seterror(res.message);
+    console.log(error)
+  }catch(err){
+    console.log(err);
   }
+}
 
 
   return(
+    <>
+   <script>
+    
+   </script>
+    <div className='error'>
+    <div className=''>
+      <p className='error'>{error}</p>
+      </div>
+    </div>
     <Grid>
       <Paper style={paperStyle}>
         <Grid align= 'center'>
@@ -39,7 +65,7 @@ const Login=({handleChange})=>{
         <input name='PhoneNo.'  fullWidth placeholder="Enter your phone number" required className='login-text' value={phone} onChange={(e)=>setPhoneNo(e.target.value)} />
         <input name='Password'  placeholder="Password" variant="filled"  fullWidth required className='login-text' value={password} onChange={(e)=>setpass(e.target.value)}/>
         <br></br><input type='checkbox'></input>
-        <button type='submit' className='btn btn-primary' >Sign In</button>
+        <button type='submit' className='btn btn-primary'  >Sign In</button>
         </form>
         <Grid align="left">
         <Typography>
@@ -54,6 +80,7 @@ const Login=({handleChange})=>{
         </Grid>
       </Paper>
     </Grid>
+    </>
   )
 }
 

@@ -6,3 +6,6 @@
     border-radius: 0.4em;
     height: 3rem;
 }
+.error{
+    background-color: red;
+}

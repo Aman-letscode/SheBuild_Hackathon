@@ -1,10 +1,9 @@
 const dotenv = require('dotenv')
 dotenv.config()
 
-
+const bodyparser = require('body-parser')
 const express = require('express')
 const cors = require('cors')
-const services= require('./controller/services')
 
 //user defined files
 const connect = require('./config/connect')
@@ -18,11 +17,13 @@ const port = process.env.PORT
 const DATABASE_URL = process.env.DATABASE_URL
 
 //using the cors function - for securing the routes
+connect(DATABASE_URL)
 app.use(cors())
 app.use(express.json())
+app.use(bodyparser.urlencoded({extended:true}))
+app.use(bodyparser.json())
 app.use("/api/user",routes)
 
-connect(DATABASE_URL)
 
 
 app.listen(port, ()=>{
