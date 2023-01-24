@@ -3,10 +3,30 @@
 import MOCK_DATA from "./MOCK_DATA.json";
 // import { COLUMNS } from "./columns";
 import "./table.css";
-import {useEffect } from "react";
+import {useEffect , useState } from "react";
 import Table from "react-bootstrap/Table";
 
+
+
 function StripedRowExample() {
+
+ 
+
+  const items = sessionStorage.getItem('login');
+  console.log(items)
+  if(!items){
+    window.location='/login'
+  }
+
+   const[dataList,setdataList]=useState([])
+   useEffect(()=>{
+   fetch("http://localhost:4000/api/user/dashboard/"+items)
+ .then(response => response.json())
+ .then(data => setdataList(data))
+
+ },[])
+  console.log(dataList);
+
   useEffect(() => {
     MOCK_DATA.forEach((obj) => {
       let table_body = document.getElementById("table-body");
@@ -55,5 +75,6 @@ function StripedRowExample() {
     </Table>
   );
 }
+
 
 export default StripedRowExample;

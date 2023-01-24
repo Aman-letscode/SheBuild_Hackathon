@@ -1,9 +1,6 @@
 import React from "react";
 import './Header.css'
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
+import { 
   Link
 } from 'react-router-dom';
 
@@ -12,7 +9,7 @@ function Header() {
   return (
    <>
    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-  <a className="navbar-brand" href="#">Navbar</a>
+  <Link className="navbar-brand " style={{ color: '#000' }}>Navbar</Link>
   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span className="navbar-toggler-icon"></span>
   </button>
@@ -20,16 +17,16 @@ function Header() {
   <div className="collapse navbar-collapse" id="navbarNav">
     <ul className="navbar-nav">
       <li className="nav-item active">    
-       <a className="nav-link " ><Link to="/login">Login</Link></a> 
+       <Link to="/login" className="nav-link" style={{ color: '#000' }}>Login</Link>
       </li>
       <li className="nav-item">
-        <a className="nav-link " href="#">Register</a>
+        <Link to="/login" className="nav-link" style={{ color: '#000' }}>About Us</Link>
       </li>
       <li className="nav-item">
-        <a className="nav-link " href="#">Contact Us</a>
+        <Link to="/login" className="nav-link" style={{ color: '#000' }}>Service</Link>
       </li>
       <li className="nav-item">
-        <a className="nav-link " >About us</a>
+        <Link to="/login" className="nav-link" style={{ color: '#000' }}>Contact us</Link>
       </li>
     </ul>
   </div>

@@ -7,32 +7,32 @@ function Page() {
   const [texts, setTexts] = useState([]);
   
   useEffect(() => {
-      const timeoutIds = [];
+      const timeoutIds=[];
       ["S", "I","G", "N", "O", "R", "A"].forEach((text, i) => {
         const timeoutId = setTimeout(() => {
             setTexts((prev) => [...prev, text]);
         }, 200 * i);
         
         timeoutIds.push(timeoutId);
-        });
+     });
 return () => {
   timeoutIds.forEach((id) => clearTimeout(id));
-  };
-    }, []);
+};
+},[]);
 const [text2, setText2] = useState([]);
     useEffect(() => {
-      const timeoutIds = [];
+      const timeoutIds=[];
       [" We"," are", " here", " to"," serve"," you"].forEach((text2, i) => {
         const timeoutId = setTimeout(() => {
           setText2((prev) => [...prev, text2]);
         }, 200 * i);
   
         timeoutIds.push(timeoutId);
-      });
+});
 return () => {
   timeoutIds.forEach((id) => clearTimeout(id));
-  };
-    }, []);
+};
+},[]);
 return (<>
   <div className="blue-background">
 
@@ -55,7 +55,7 @@ return (<>
 </div>
 <div className="col-md-6">
   <div className="image-area">
-    <img  className="image" src={img}></img>
+    <img  className="image" src={img} alt='doctor'></img>
   </div>
 </div>
 </div>
@@ -66,4 +66,4 @@ return (<>
   );
 }
 
-export default Page
+export default Page

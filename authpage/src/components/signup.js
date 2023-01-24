@@ -1,12 +1,12 @@
 import React from "react"
 import Button from '@mui/material/Button'
-import { Avatar, Grid, Paper, input, Typography } from "@mui/material"
+import { Avatar, Grid, Paper, Typography } from "@mui/material"
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import FormControlLabel from '@mui/material/FormControlLabel';
 //import FormControl from '@mui/material/FormControl';
 //import FormLabel from '@mui/material/FormLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { useState } from "react";
+import { useState as UseState  } from "react";
 import './login.css'
 
 
@@ -17,25 +17,28 @@ const Signup = () => {
   const avatarStyle = { backgroundColor: '#26baab' }
  // const marginTop = { margin: 5 }
 
-  const [firstname,setName]=useState("");
-  const [lastname,setLastName]=useState("");
-  const [phone,setPhoneNo]=useState("");
-  const [password,setpass]=useState("");
-  const [cpassword,setcpass]=useState("");
+  const [firstname,setName]=UseState("");
+  const [lastname,setLastName]=UseState("");
+  const [phone,setPhoneNo]=UseState("");
+  const [password,setpass]=UseState("");
+  const [cpassword,setcpass]=UseState("");
+  const [dob,setdob]=UseState("");
   const handleSubmit= async (e)=>{
     e.preventDefault();
-    const detail ={firstname,lastname,phone,password,cpassword}
+    const detail ={firstname:firstname,lastname: lastname,dob:dob,phone:phone,password:password,cpassword:cpassword}
+    
 try{
     const response = await fetch("http://localhost:4000/api/user/register",{
       method:'POST',
       headers:{
-        'Accept':'verification/json',
-        'Content-type':'verification/json'
+        //'Accept':'aerification/json'
+        'Content-type':'application/json'
       },
       body:JSON.stringify(detail)
     })
     const res = await response.json();
-    console.log(res);
+    sessionStorage.setItem('login',res.token);
+    
   }catch(err){
     console.log(err);
   }
@@ -56,7 +59,7 @@ try{
           <input label="Firstname" type="text" variant="filled" fullWidth placeholder="Enter your firstname" value={firstname} required onChange={(e)=>setName(e.target.value)} className='login-text'/>
           <input label="Lastname" type="text" variant="filled" fullWidth placeholder="Enter your lastname" value={lastname} required onChange={(e)=>setLastName(e.target.value)} className='login-text'/>
           <input label="Phone Number" variant="filled" fullWidth placeholder="Enter your phone number" value={phone} required onChange={(e)=>setPhoneNo(e.target.value)} className='login-text'/>
-          <input type="date"  variant="filled" fullWidth required className="login-text" />
+          <input type="date"  variant="filled" fullWidth required className="login-text" value={dob} onChange={(e)=>setdob(e.target.value)} />
           <input label="Password" variant="filled" fullWidth placeholder="Password should be of 6 characters."value={password} required onChange={(e)=>setpass(e.target.value)} className='login-text'/>
           <input label="Confirm Password" variant="filled"  placeholder="Confirm Password" fullWidth required value={cpassword} onChange={(e)=>setcpass(e.target.value)} className='login-text'/>
           <input type="address" label="Any special condition?" placeholder="Any Special Condition" variant="outlined" fullWidth required className='login-text' />

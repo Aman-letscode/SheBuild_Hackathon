@@ -18,6 +18,7 @@ class UserController {
     services.MsgAllot(allid);
   }
   static userRegister = async (req, res) => {
+    console.log(req.body)
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const phone = req.body.phone;
@@ -35,6 +36,7 @@ class UserController {
       console.log(user);
     } else {
       if (firstname && phone && password) {
+        
         if (password == cpassword) {
           try {
             const salt = await bcrypt.genSalt(10);
@@ -61,6 +63,7 @@ class UserController {
                 status: "success",
                 message: "Registration Successful",
                 token: token,
+                login: true
               });
           } catch (err) {
             console.log(err);
@@ -76,6 +79,7 @@ class UserController {
           });
         }
       } else {
+        console.log(firstname)
         res.json({ status: "failed", message: "All feilds are required" });
       }
     }
@@ -107,6 +111,7 @@ class UserController {
               status: "success",
               message: "Login Successful",
               token: token,
+              login: true
             });
         } else {
           console.log("Login Unsuccessful")

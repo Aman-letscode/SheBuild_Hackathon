@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Login from '../components/login.js'
 import Signup from '../components/signup.js'
-import FormControlLabel from '@mui/material/FormControlLabel';
 import { Paper } from "@mui/material";
 
 

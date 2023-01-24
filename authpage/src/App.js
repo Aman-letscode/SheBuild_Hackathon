@@ -7,11 +7,9 @@ import SignInOutContainer from './containers';
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Link
+  Route
 } from 'react-router-dom';
-import { Login } from '@mui/icons-material';
-import Signup from './components/signup';
+import BasicTable from './components/BasicTable'
 
 function App() {
   return (<Router>
@@ -22,6 +20,10 @@ function App() {
 
       </Route>
       <Route exact path='/login' element={<><Header/><SignInOutContainer/>
+      </>}>
+
+      </Route>
+      <Route exact path='/dashboard' element={<><Header/><BasicTable />
       </>}>
 
       </Route>

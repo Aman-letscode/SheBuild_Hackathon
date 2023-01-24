@@ -2,17 +2,20 @@ import React from 'react';
 import { Avatar, Grid, Link, Paper, Typography } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import './login.css'
-import { useState } from 'react';
+import { useState as UseState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Login=({handleChange})=>{
   
-  const [phone,setPhoneNo]=useState("");
-  const [password,setpass]=useState("");
-  const [error,seterror]=useState("");
+  const navigate = useNavigate();
+  const [phone,setPhoneNo]=UseState("");
+  const [password,setpass]=UseState("");
+  const [error,seterror]=UseState("");
   const paperStyle={padding: 20, height: '77vh', width: 300, margin: "20px auto"}
   const avatarStyle={backgroundColor: '#26baab'}
-  
+
   const handleSubmit = async (e)=>{
     e.preventDefault();
     const detail ={phone:phone,password:password}
@@ -35,21 +38,24 @@ const Login=({handleChange})=>{
       throw new Error(`Error! status: ${response.status}`);
     } 
     const res = await response.json();
+    sessionStorage.setItem('login',res.token);
     
-    console.log(res);
+
     seterror(res.message);
     console.log(error)
+    if(res.token){
+      navigate("/dashboard")
+    }
   }catch(err){
     console.log(err);
   }
+
+  
 }
 
 
   return(
     <>
-   <script>
-    
-   </script>
     <div className='error'>
     <div className=''>
       <p className='error'>{error}</p>
